@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"middleware/example/internal/repositories/collections" // Assure-toi que l'import pointe vers le bon chemin
+	"middleware/example/internal/repositories/collections"
 	"net/http"
 
 	"github.com/gofrs/uuid"
