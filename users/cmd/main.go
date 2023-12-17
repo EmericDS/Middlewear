@@ -34,7 +34,7 @@ func init() {
 			id VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
 			username VARCHAR(255) NOT NULL,
 			email VARCHAR(255) NOT NULL
-		);`, // Modifie le schéma pour correspondre à la nouvelle structure de la table "users"
+		);`,
 	}
 	for _, scheme := range schemes {
 		if _, err := db.Exec(scheme); err != nil {
