@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"middleware/example/internal/repositories/collections" // Assure-toi que l'import pointe vers le bon chemin
 	"net/http"
 
 	"github.com/gofrs/uuid"
@@ -23,7 +24,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	userID, _ := ctx.Value("userID").(uuid.UUID)
 
-	user, err := collections.GetUserById(userID)
+	user, err := collections.GetUserById(userID) // Assure-toi que tu fais référence au bon package ici
 	if err != nil {
 		if errors.As(err, &sql.ErrNoRows) {
 			w.WriteHeader(http.StatusNotFound)

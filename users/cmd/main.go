@@ -1,22 +1,22 @@
 package main
 
 import (
+	"middleware/example/internal/controllers/collections" // Assure-toi que le chemin d'importation est correct
+	"middleware/example/internal/helpers"
+	"net/http"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
-	"middleware/example/internal/controllers/collections"
-	"middleware/example/internal/helpers"
-	_ "middleware/example/internal/models"
-	"net/http"
 )
 
 func main() {
 	r := chi.NewRouter()
 
-	r.Route("/collections", func(r chi.Router) {
-		r.Get("/", collections.GetCollections)
+	r.Route("/users", func(r chi.Router) { // Utilise "users" à la place de "collections"
+		r.Get("/", collections.GetUsers) // Utilise GetUsers à la place de GetCollections
 		r.Route("/{id}", func(r chi.Router) {
 			r.Use(collections.Ctx)
-			r.Get("/", collections.GetCollection)
+			r.Get("/", collections.GetUser) // Utilise GetUser à la place de GetCollection
 		})
 	})
 
@@ -30,10 +30,11 @@ func init() {
 		logrus.Fatalf("error while opening database : %s", err.Error())
 	}
 	schemes := []string{
-		`CREATE TABLE IF NOT EXISTS collections (
+		`CREATE TABLE IF NOT EXISTS users (
 			id VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
-			content VARCHAR(255) NOT NULL
-		);`,
+			username VARCHAR(255) NOT NULL,
+			email VARCHAR(255) NOT NULL
+		);`, // Modifie le schéma pour correspondre à la nouvelle structure de la table "users"
 	}
 	for _, scheme := range schemes {
 		if _, err := db.Exec(scheme); err != nil {
