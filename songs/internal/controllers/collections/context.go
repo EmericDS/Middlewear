@@ -1,4 +1,4 @@
-package collections
+package songs
 
 import (
 	"context"
@@ -7,13 +7,13 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
-	"middleware/example/internal/models"
+	"middleweare/internal/models"
 	"net/http"
 )
 
 func Ctx(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		collectionId, err := uuid.FromString(chi.URLParam(r, "id"))
+		songID, err := uuid.FromString(chi.URLParam(r, "id"))
 		if err != nil {
 			logrus.Errorf("parsing error : %s", err.Error())
 			customError := &models.CustomError{
@@ -26,7 +26,7 @@ func Ctx(next http.Handler) http.Handler {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), "collectionId", collectionId)
+		ctx := context.WithValue(r.Context(), "songID", songID)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

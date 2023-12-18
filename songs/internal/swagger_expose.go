@@ -1,8 +1,8 @@
 package internal
 
-// @title        middleware/example
+// @title        middleweare
 // @version      1.0.0
-// @description  API to manage collections.
+// @description  API to manage songs.
 
 // @contact.name   Justine Bachelard.
 // @contact.email  justine.bachelard@ext.uca.fr
