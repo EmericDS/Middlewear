@@ -2,6 +2,7 @@ package collections
 
 import (
 	"encoding/json"
+	"middleware/example/internal/helpers"
 	"middleware/example/internal/models"
 	"net/http"
 
@@ -31,7 +32,26 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Implémenter la logique pour mettre à jour l'utilisateur dans la base de données avec l'ID userID
+	db, err := helpers.OpenDB()
+	if err != nil {
+		logrus.Errorf("error while opening database: %s", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer helpers.CloseDB(db)
+
+	result, err := db.Exec("UPDATE users SET username=?, email=? WHERE id=?", updatedUser.Username, updatedUser.Email, userID)
+	if err != nil {
+		logrus.Errorf("error updating user: %s", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 
 	w.WriteHeader(http.StatusOK)
 }

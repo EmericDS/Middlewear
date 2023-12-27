@@ -2,6 +2,7 @@ package collections
 
 import (
 	"encoding/json"
+	"middleware/example/internal/helpers"
 	"middleware/example/internal/models"
 	"net/http"
 
@@ -26,7 +27,21 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Implémenter la logique pour créer un nouvel utilisateur dans la base de données
+	db, err := helpers.OpenDB()
+	if err != nil {
+		logrus.Errorf("error while opening database: %s", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer helpers.CloseDB(db)
+
+	_, err = db.Exec("INSERT INTO users (id, username, email) VALUES (?, ?, ?)",
+		newUser.ID, newUser.Username, newUser.Email)
+	if err != nil {
+		logrus.Errorf("error creating user: %s", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	w.WriteHeader(http.StatusCreated)
 }
