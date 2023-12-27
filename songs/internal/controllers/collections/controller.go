@@ -19,6 +19,7 @@ import (
 // @Failure      500            "Something went wrong"
 // @Router       /collections/{id} [get]
 // GetSongs handles GET /songs
+
 func GetSongs(w http.ResponseWriter, r *http.Request) {
 	songs, err := songs.GetAllSongs()
 	if err != nil {

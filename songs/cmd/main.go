@@ -26,3 +26,27 @@ func main() {
 	logrus.Fatalln(http.ListenAndServe(":7854", r))
 }
 
+func init() {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		logrus.Fatalf("error while opening database : %s", err.Error())
+	}
+	defer helpers.CloseDB(db)
+
+	schemes := []string{
+		`CREATE TABLE IF NOT EXISTS songs (
+			id UUID PRIMARY KEY NOT NULL,
+			title VARCHAR(255) NOT NULL,
+			artist VARCHAR(255) NOT NULL,
+			album VARCHAR(255) NOT NULL,
+			release_year INT NOT NULL
+		);`,
+	}
+
+	for _, scheme := range schemes {
+		_, err := db.Exec(scheme)
+		if err != nil {
+			logrus.Fatalf("Could not generate table! Error was : %s", err.Error())
+		}
+	}
+}
