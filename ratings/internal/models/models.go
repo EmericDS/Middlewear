@@ -1,10 +1,13 @@
 package models
 
 import (
-	"github.com/gofrs/uuid"
+    "github.com/gofrs/uuid"
 )
 
-type Collection struct {
-	Id      *uuid.UUID `json:"id"`
-	Content string     `json:"content"`
+type Rating struct {
+    ID       *uuid.UUID `json:"id"`
+    UserID   *uuid.UUID `json:"userId"`
+    SongID   *uuid.UUID `json:"songId"`
+    Rating   int        `json:"rating"`
+    Comments string     `json:"comments"`
 }
