@@ -38,8 +38,8 @@ func init() {
 			id UUID PRIMARY KEY NOT NULL,
 			title VARCHAR(255) NOT NULL,
 			artist VARCHAR(255) NOT NULL,
-			album VARCHAR(255) NOT NULL,
-			release_year INT NOT NULL
+			genre VARCHAR(255) NOT NULL,
+			duration INT NOT NULL
 		);`,
 	}
 
