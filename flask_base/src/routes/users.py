@@ -19,7 +19,7 @@ users = Blueprint(name="users", import_name=__name__)
 
 @users.route('/<id>', methods=['GET'])
 @login_required
-def get_user(id):
+def GetUser(id):
     """
     ---
     get:
@@ -57,7 +57,7 @@ def get_user(id):
           - users
     """
     # Appeler la fonction correspondante de l'API Users pour obtenir un utilisateur par ID
-    user = get_user(id)
+    user = GetUser(id)
     if user:
         return jsonify(user), 200
     else:
@@ -66,7 +66,7 @@ def get_user(id):
 
 @users.route('/<id>', methods=['PUT'])
 @login_required
-def update_user(id):
+def UpdateUser(id):
     """
     ---
     put:
@@ -124,7 +124,7 @@ def update_user(id):
 
     # Modification de l'utilisateur (username, nom, mot de passe, etc.)
     try:
-        return update_user(id, user_update)
+        return UpdateUser(id, user_update)
     except Conflict:
         error = ConflictSchema().loads(json.dumps({"message": "User already exists"}))
         return error, error.get("code")
@@ -140,7 +140,7 @@ def update_user(id):
 
 
 @users.route('/', methods=['POST'])
-def create_user():
+def CreateUser():
     """
     ---
     post:
@@ -176,7 +176,7 @@ def create_user():
           - users
     """
     try:
-        return users_service.create_user(request)
+        return users_service.CreateUser(request)
     except BadRequest:
         error = BadRequestSchema().loads(json.dumps({"message": "Bad Request"}))
         return error, error.get("code")
@@ -189,7 +189,7 @@ def create_user():
 
 
 @users.route('/<id>', methods=['DELETE'])
-def delete_user(id):
+def DeleteUser(id):
     """
     ---
     delete:
@@ -222,7 +222,7 @@ def delete_user(id):
           - users
     """
     try:
-        return users_service.delete_user(id)
+        return users_service.DeleteUser(id)
     except NotFound:
         error = NotFoundSchema().loads(json.dumps({"message": "User not found"}))
         return error, error.get("code")
@@ -232,7 +232,7 @@ def delete_user(id):
 
 
 @users.route('/', methods=['GET'])
-def get_users():
+def GetUsers():
     """
     ---
     get:
@@ -256,7 +256,7 @@ def get_users():
           - users
     """
     try:
-        return users_service.get_users()
+        return users_service.GetUsers()
     except Exception:
         error = InternalServerErrorSchema().loads(json.dumps({"message": "Internal Server Error"}))
         return error, error.get("code")
