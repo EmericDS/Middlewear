@@ -1,4 +1,3 @@
-# ratings.py
 import json
 import requests
 from marshmallow import EXCLUDE
